@@ -79,3 +79,7 @@ func (block *Block) SetHash() {
 	hash := sha256.Sum256(blockInfo)
 	block.Hash = hash[:]
 }
+
+func (block *Block) toByte()  []byte{
+	return []byte{}
+}

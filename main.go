@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 )
 
 
@@ -19,11 +18,11 @@ func main(){
 	bc.AddBlock("我是第二块")
 	bc.AddBlock("我是第三块")
 
-	for i,block := range bc.blocks {
-		fmt.Printf("=============当前区块高度===========:%x\n", i)
-		//block := NewBlock("应用广泛", nil)
-		fmt.Printf("前区块哈希:%x\n", block.PrevHash)
-		fmt.Printf("当前区块哈希:%x\n", block.Hash)
-		fmt.Printf("data:%s\n", block.Data)
-	}
+	//for i,block := range bc.blocks {
+	//	fmt.Printf("=============当前区块高度===========:%x\n", i)
+	//	//block := NewBlock("应用广泛", nil)
+	//	fmt.Printf("前区块哈希:%x\n", block.PrevHash)
+	//	fmt.Printf("当前区块哈希:%x\n", block.Hash)
+	//	fmt.Printf("data:%s\n", block.Data)
+	//}
 }
