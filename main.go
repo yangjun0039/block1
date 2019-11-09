@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 )
 
 
@@ -16,25 +15,25 @@ import (
 
 func main(){
 	bc := NewBlockChain()
-	bc.AddBlock("111111")
-	bc.AddBlock("222222")
+	//bc.AddBlock("111111")
+	//bc.AddBlock("222222")
+	cli := CLI{bc}
+	cli.Run()
 
-	fmt.Println("------------------------------")
-	fmt.Println("------------------------------")
-	fmt.Println("------------------------------")
+
 
 	// 调用迭代器
-	it := bc.NewIterator()
-	for {
-		block := it.Next()
-		fmt.Printf("前区块哈希:%x\n", block.PrevHash)
-		fmt.Printf("当前区块哈希:%x\n", block.Hash)
-		fmt.Printf("data:%s\n", block.Data)
-		fmt.Printf("***********************\n\n")
-		if len(block.PrevHash) == 0{
-			fmt.Println("区块链遍历结束")
-			break
-		}
-	}
+	//it := bc.NewIterator()
+	//for {
+	//	block := it.Next()
+	//	fmt.Printf("前区块哈希:%x\n", block.PrevHash)
+	//	fmt.Printf("当前区块哈希:%x\n", block.Hash)
+	//	fmt.Printf("data:%s\n", block.Data)
+	//	fmt.Printf("***********************\n\n")
+	//	if len(block.PrevHash) == 0{
+	//		fmt.Println("区块链遍历结束")
+	//		break
+	//	}
+	//}
 
 }
