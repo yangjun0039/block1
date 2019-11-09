@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"encoding/binary"
 	"time"
+	"encoding/gob"
 )
 
 // 1.定义结构
@@ -80,6 +81,24 @@ func (block *Block) SetHash() {
 	block.Hash = hash[:]
 }
 
-func (block *Block) toByte()  []byte{
-	return []byte{}
+// 序列化
+func (block *Block) Serialize() []byte{
+	var buffer bytes.Buffer
+	encoder := gob.NewEncoder(&buffer)
+	err := encoder.Encode(&block)
+	if err != nil{
+		panic(err)
+	}
+	return buffer.Bytes()
+}
+
+// 反序列化
+func DeSerialize(data []byte) Block{
+	var block Block
+	deCoder := gob.NewDecoder(bytes.NewReader(data))
+	err := deCoder.Decode(&block)
+	if err != nil{
+		panic(err)
+	}
+	return block
 }

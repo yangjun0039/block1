@@ -3,6 +3,7 @@ package main
 import (
 	"block/block1/bolt"
 	"log"
+	"fmt"
 )
 
 // 引入区块链
@@ -43,9 +44,10 @@ func NewBlockChain() *BlockChain {
 			}
 			// 创建一个创世块，并作为第一个区块加入到区块链中
 			genesisBlock := GenesisBlock()
-			bucket.Put(genesisBlock.Hash, genesisBlock.toByte())
+			bucket.Put(genesisBlock.Hash, genesisBlock.Serialize())
 			bucket.Put([]byte("LastHashKey"), genesisBlock.Hash)
 			lastHash = genesisBlock.Hash
+
 		} else {
 			lastHash = bucket.Get([]byte("LastHashKey"))
 		}
