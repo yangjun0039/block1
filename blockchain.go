@@ -79,3 +79,5 @@ func (bc *BlockChain) AddBlock(data string) {
 		return nil
 	})
 }
+
+

@@ -1,3 +1,4 @@
 .idea
 blockChain.db
 block1.exe
+blockChain.db.lock
