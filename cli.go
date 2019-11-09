@@ -23,7 +23,7 @@ func (cli *CLI)Run(){
 
 	cmd := args[1]
 	switch cmd {
-	case "addblock":
+	case "addBlock":
 		//添加区块
 		fmt.Println("添加区块")
 		// 确定命令有效
