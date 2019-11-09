@@ -3,7 +3,6 @@ package main
 import (
 	"block/block1/bolt"
 	"log"
-	"fmt"
 )
 
 // 引入区块链
@@ -27,7 +26,7 @@ func NewBlockChain() *BlockChain {
 
 	// 1.打开数据库
 	db, err := bolt.Open(blockChainDb, 0600, nil)
-	defer db.Close()
+	//defer db.Close()
 	if err != nil {
 		log.Panic("打开数据库失败")
 	}
@@ -63,11 +62,20 @@ func GenesisBlock() *Block {
 
 //添加区块
 func (bc *BlockChain) AddBlock(data string) {
-//	// 最后一个区块
-//	lastBlock := bc.blocks[len(bc.blocks)-1]
-//	prevHash := lastBlock.Hash
-//	// 创建新的区块
-//	block := NewBlock(data, prevHash)
-//	// 添加到区块链数组中
-//	bc.blocks = append(bc.blocks, block)
+	db := bc.db
+	lastHash := bc.tail
+
+	db.Update(func(tx *bolt.Tx) error {
+		bucket := tx.Bucket([]byte(blockBucket))
+		if bucket == nil {
+			log.Panic("bucket为空")
+		}
+		// 创建新的区块
+		block := NewBlock(data, lastHash)
+		// 添加到区块链db中
+		bucket.Put(block.Hash, block.Serialize())
+		bucket.Put([]byte("LastHashKey"), block.Hash)
+		bc.tail = block.Hash
+		return nil
+	})
 }

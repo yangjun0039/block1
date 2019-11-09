@@ -15,8 +15,8 @@ import (
 
 func main(){
 	bc := NewBlockChain()
-	bc.AddBlock("我是第二块")
-	bc.AddBlock("我是第三块")
+	bc.AddBlock("111111")
+	bc.AddBlock("222222")
 
 	//for i,block := range bc.blocks {
 	//	fmt.Printf("=============当前区块高度===========:%x\n", i)

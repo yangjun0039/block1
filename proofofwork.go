@@ -54,7 +54,6 @@ func (pow *ProofOfWork) Run() ([]byte, uint64) {
 		// 做哈希运算
 		hash = sha256.Sum256(blockInfo)
 
-
 		// 与pow中target进行比较
 		tmpInt := big.Int{}
 		// 将得到的hash数组转成一个big.int

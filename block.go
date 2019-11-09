@@ -1,11 +1,10 @@
 package main
 
 import (
-	"crypto/sha256"
 	"bytes"
 	"encoding/binary"
-	"time"
 	"encoding/gob"
+	"time"
 )
 
 // 1.定义结构
@@ -44,7 +43,6 @@ func NewBlock(data string, prevBlockHash []byte) *Block {
 		Data:       []byte(data),
 	}
 
-
 	//block.SetHash()
 	// 创建一个pow对象
 	pow := NewProofOfWork(&block)
@@ -61,6 +59,7 @@ func NewBlock(data string, prevBlockHash []byte) *Block {
 }
 
 // 3.生成哈希
+/*
 func (block *Block) SetHash() {
 	// 1.拼装数据
 	//blockInfo := append(block.PrevHash, block.Hash...)
@@ -80,6 +79,7 @@ func (block *Block) SetHash() {
 	hash := sha256.Sum256(blockInfo)
 	block.Hash = hash[:]
 }
+*/
 
 // 序列化
 func (block *Block) Serialize() []byte{
