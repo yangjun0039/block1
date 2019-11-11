@@ -1,26 +1,17 @@
 package main
 
-import (
-)
-
-
-
-
 // 4.引入区块链
 
 // 5.添加区块
 
 // 6.重构代码
 
-
-func main(){
-	bc := NewBlockChain()
+func main() {
+	bc := NewBlockChain("杨骏")
 	//bc.AddBlock("111111")
 	//bc.AddBlock("222222")
 	cli := CLI{bc}
 	cli.Run()
-
-
 
 	// 调用迭代器
 	//it := bc.NewIterator()

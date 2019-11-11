@@ -1,10 +1,10 @@
 package main
 
 import (
-	"math/big"
 	"bytes"
 	"crypto/sha256"
 	"fmt"
+	"math/big"
 )
 
 // 定义一个工作量证明的结构ProofOfWork
@@ -46,7 +46,8 @@ func (pow *ProofOfWork) Run() ([]byte, uint64) {
 			Unit64ToByte(block.Difficulty),
 			Unit64ToByte(nonce),
 			block.Hash,
-			block.Data,
+			// 只对区块头做哈希
+			//block.Data,
 		}
 		// 将二维的切片数组连接起来，返回一个一维的切片
 		blockInfo := bytes.Join(temp, []byte{})
@@ -64,7 +65,7 @@ func (pow *ProofOfWork) Run() ([]byte, uint64) {
 			fmt.Printf("挖矿成功，hash: %x, nonce: %d\n", hash, nonce)
 			break
 		} else {
-			nonce ++
+			nonce++
 		}
 
 	}

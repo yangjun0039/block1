@@ -17,7 +17,8 @@ type Block struct {
 	Nonce      uint64 //随机数
 
 	Hash []byte //当前区块哈希，正常比特币区块中没有当前区块的哈希，此处为了方便
-	Data []byte //数据
+	//Data []byte //数据
+	Transactions []*Transaction //真实的交易数组
 }
 
 //实现一个辅助函数，功能是将uint64转成[]byte
@@ -31,7 +32,7 @@ func Unit64ToByte(num uint64) []byte {
 }
 
 // 2.创建区块
-func NewBlock(data string, prevBlockHash []byte) *Block {
+func NewBlock(txs []*Transaction, prevBlockHash []byte) *Block {
 	block := Block{
 		Version:    00,
 		PrevHash:   prevBlockHash,
@@ -40,8 +41,10 @@ func NewBlock(data string, prevBlockHash []byte) *Block {
 		Difficulty: 0,
 		Nonce:      0,
 		Hash:       []byte{},
-		Data:       []byte(data),
+		//Data:       []byte(data),
+		Transactions: txs,
 	}
+	block.MerkelRoot = block.MakeMerkelRoot()
 
 	//block.SetHash()
 	// 创建一个pow对象
@@ -53,7 +56,6 @@ func NewBlock(data string, prevBlockHash []byte) *Block {
 	block.Nonce = nonce
 
 	// 根据挖矿结果对区块数据进行更新
-
 
 	return &block
 }
@@ -81,23 +83,28 @@ func (block *Block) SetHash() {
 }
 */
 
+func (block *Block) MakeMerkelRoot() []byte {
+	// todo
+	return []byte{}
+}
+
 // 序列化
-func (block *Block) Serialize() []byte{
+func (block *Block) Serialize() []byte {
 	var buffer bytes.Buffer
 	encoder := gob.NewEncoder(&buffer)
 	err := encoder.Encode(&block)
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 	return buffer.Bytes()
 }
 
 // 反序列化
-func DeSerialize(data []byte) Block{
+func DeSerialize(data []byte) Block {
 	var block Block
 	deCoder := gob.NewDecoder(bytes.NewReader(data))
 	err := deCoder.Decode(&block)
-	if err != nil{
+	if err != nil {
 		panic(err)
 	}
 	return block

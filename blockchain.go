@@ -17,7 +17,7 @@ const blockChainDb = "blockChain.db"
 const blockBucket = "blockBucket"
 
 //定义一个区块链
-func NewBlockChain() *BlockChain {
+func NewBlockChain(address string) *BlockChain {
 	//genesisBlock := GenesisBlock()
 	//return &BlockChain{
 	//	[]*Block{genesisBlock},
@@ -42,7 +42,7 @@ func NewBlockChain() *BlockChain {
 				log.Panic("创建抽屉失败")
 			}
 			// 创建一个创世块，并作为第一个区块加入到区块链中
-			genesisBlock := GenesisBlock()
+			genesisBlock := GenesisBlock(address)
 			bucket.Put(genesisBlock.Hash, genesisBlock.Serialize())
 			bucket.Put([]byte("LastHashKey"), genesisBlock.Hash)
 			lastHash = genesisBlock.Hash
@@ -56,12 +56,13 @@ func NewBlockChain() *BlockChain {
 }
 
 //定义一个创世链
-func GenesisBlock() *Block {
-	return NewBlock("我是创世者", []byte{})
+func GenesisBlock(address string) *Block {
+	coinbase := NewCoinbaseTX(address, "我是创世者")
+	return NewBlock([]*Transaction{coinbase}, []byte{})
 }
 
 //添加区块
-func (bc *BlockChain) AddBlock(data string) {
+func (bc *BlockChain) AddBlock(txs []*Transaction) {
 	db := bc.db
 	lastHash := bc.tail
 
@@ -71,7 +72,7 @@ func (bc *BlockChain) AddBlock(data string) {
 			log.Panic("bucket为空")
 		}
 		// 创建新的区块
-		block := NewBlock(data, lastHash)
+		block := NewBlock(txs, lastHash)
 		// 添加到区块链db中
 		bucket.Put(block.Hash, block.Serialize())
 		bucket.Put([]byte("LastHashKey"), block.Hash)
@@ -79,5 +80,3 @@ func (bc *BlockChain) AddBlock(data string) {
 		return nil
 	})
 }
-
-
