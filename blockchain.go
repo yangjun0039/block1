@@ -128,7 +128,7 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 					}
 				}
 			} else {
-				fmt.Println("这是挖矿交易，不做input便利")
+				fmt.Println("这是挖矿交易，不做input遍历")
 			}
 
 		}
