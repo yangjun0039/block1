@@ -26,11 +26,11 @@ func (cli *CLI) PrintBlockChain() {
 	}
 }
 
-func (cli *CLI) GetBalance(address string){
+func (cli *CLI) GetBalance(address string) {
 	utxos := cli.bc.FindUTXOs(address)
 	total := 0.0
-	for _,utxo := range utxos{
-		total += utxo.value
+	for _, utxo := range utxos {
+		total += utxo.Value
 	}
-	fmt.Printf("%s余额为%f", address,total)
+	fmt.Printf("%s余额为%f", address, total)
 }

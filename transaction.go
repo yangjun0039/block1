@@ -17,13 +17,13 @@ type Transaction struct {
 // 定义交易输入
 type TXInput struct {
 	TXid  []byte //引用的交易id
-	index int64  //引用的交易output索引值
+	Index int64  //引用的交易output索引值
 	Sig   string //解锁脚本，用地址来模拟
 }
 
 // 定义交易输出
 type TXOutput struct {
-	value      float64 //转账金额
+	Value      float64 //转账金额
 	PukKeyHash string  //锁定脚本，用地址来模拟
 }
 
