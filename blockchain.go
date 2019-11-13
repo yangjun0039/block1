@@ -123,8 +123,9 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 				for _, input := range tx.TXInputs {
 					// 判断一下当前这个input和目标(李四)是否一致，如果相同，说明这个是李四消耗过的output，就加进来
 					if input.Sig == address {
-						indexArray := spentOutputs[string(input.TXid)]
-						indexArray = append(indexArray, input.Index)
+						//indexArray := spentOutputs[string(input.TXid)]
+						//indexArray = append(indexArray, input.Index)
+						spentOutputs[string(input.TXid)] = append(spentOutputs[string(input.TXid)], input.Index)
 					}
 				}
 			} else {
@@ -143,7 +144,7 @@ func (bc *BlockChain) FindUTXOs(address string) []TXOutput {
 // 根据需求找到合理的utxo
 func (bc *BlockChain) FindNeedUTXOs(from string, amount float64) (map[string][]int64, float64) {
 	// 找到的合理的uyxos集合
-	var utxos map[string][]int64
+	utxos := make(map[string][]int64)
 	// 找到的
 	var calc float64
 	//todo
