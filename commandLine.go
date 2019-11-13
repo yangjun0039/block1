@@ -41,5 +41,16 @@ func (cli *CLI) Send(from, to string, amount float64, miner, data string) {
 	fmt.Printf("amount: %f\n", amount)
 	fmt.Printf("miner: %s\n", miner)
 	fmt.Printf("data: %s\n", data)
-	// todo
+
+	// 1.创建挖矿交易
+	coinbase := NewCoinbaseTX(miner, data)
+	// 2.创建一个普通交易
+	tx := NewTransaction(from, to, amount, cli.bc)
+	if tx == nil {
+		fmt.Println("无效的交易")
+		return
+	}
+	// 3.添加到区块
+	cli.bc.AddBlock([]*Transaction{coinbase, tx})
+	fmt.Println("转账成功")
 }

@@ -177,6 +177,7 @@ func (bc *BlockChain) FindNeedUTXOs(from string, amount float64) (map[string][]i
 						utxos[string(tx.TXID)] = append(utxos[string(tx.TXID)], int64(i))
 						calc += output.Value
 						if calc >= amount {
+							fmt.Printf("找到了满足的金额：%f\n", calc)
 							return utxos, calc
 						}
 					}
