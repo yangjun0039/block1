@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"crypto/sha256"
 	"encoding/binary"
 	"encoding/gob"
 	"time"
@@ -84,8 +85,13 @@ func (block *Block) SetHash() {
 */
 
 func (block *Block) MakeMerkelRoot() []byte {
-	// todo
-	return []byte{}
+	var info []byte
+	for _, tx := range block.Transactions {
+		// 将交易的哈希值拼接起来，再整体做哈希
+		info = append(info, tx.TXID...)
+	}
+	hash := sha256.Sum256(info)
+	return hash[:]
 }
 
 // 序列化

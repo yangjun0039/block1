@@ -11,11 +11,11 @@ type CLI struct {
 }
 
 const usage = `
-	addBlock --data Data            "添加区块"
 	printChain                      "打印区块链"
 	printChainR                     "反向打印区块链"
 	getBalance --address ADDRESS    "获取指定地址的余额"
 	send FROM TO AMOUNT MINER DATA  "由FROM转AMOUNT给TO，由MINER挖矿，同时写入DATA"
+	newWallet                       "创建一个钱包(公钥私钥对)"
 `
 
 func (cli *CLI) Run() {
@@ -27,17 +27,6 @@ func (cli *CLI) Run() {
 
 	cmd := args[1]
 	switch cmd {
-	case "addBlock":
-		//添加区块
-		fmt.Println("添加区块")
-		// 确定命令有效
-		if len(args) == 4 && args[2] == "--data" {
-			data := args[3]
-			cli.AddBlock(data)
-		} else {
-			fmt.Println("添加区块参数错误")
-			fmt.Printf(usage)
-		}
 	case "printChain":
 		//打印区块
 		fmt.Println("打印区块")
@@ -64,6 +53,9 @@ func (cli *CLI) Run() {
 		miner := args[5]
 		data := args[6]
 		cli.Send(from, to, amount, miner, data)
+	case "newWallet":
+		fmt.Println("创建新的钱包...")
+		cli.NewWallet()
 	default:
 		fmt.Println("无效的命令")
 		fmt.Printf(usage)
