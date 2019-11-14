@@ -5,6 +5,9 @@ import (
 	"crypto/elliptic"
 	"crypto/rand"
 	"log"
+	"crypto/sha256"
+	"golang.org/x/crypto/ripemd160"
+	"github.com/btcsuite/btcutil/base58"
 )
 
 //这里钱包是一个结构，每一个钱包保存了公钥，私钥
@@ -33,3 +36,43 @@ func NewWallet() *Wallet {
 }
 
 //生成地址
+func (w *Wallet) NewAddress() string{
+	pubKey := w.PubKey
+
+	rip160HashValue := HashPubKey(pubKey)
+
+	version := byte(00)
+	payload := append([]byte{version}, rip160HashValue...)
+
+	//checksum
+	checkCode := CheckSum(payload)
+
+	//25字节
+	payload = append(payload, checkCode...)
+
+	//go有一个库叫做btcd，这个是go语言实现的比特币全节点源码
+	address := base58.Encode(payload)
+	return address
+}
+
+func HashPubKey(data []byte) []byte{
+	hash := sha256.Sum256(data)
+	// 理解为编码器
+	hash160hasger := ripemd160.New()
+	_,err := hash160hasger.Write(hash[:])
+	if err != nil{
+		log.Panic(err)
+	}
+	//返回rip160的哈希结果
+	rip160HashValue := hash160hasger.Sum(nil)
+	return rip160HashValue
+}
+
+func CheckSum(data []byte) []byte {
+	//两次hash256
+	hash1 := sha256.Sum256(data)
+	hash2 := sha256.Sum256(hash1[:])
+	//前四字节检验码
+	checkCode := hash2[:4]
+	return checkCode
+}
