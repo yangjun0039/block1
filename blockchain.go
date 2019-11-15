@@ -33,7 +33,7 @@ func NewBlockChain(address string) *BlockChain {
 	}
 
 	//操作数据库(改写)
-	db.Update(func(tx *bolt.Tx) error {
+	err = db.Update(func(tx *bolt.Tx) error {
 		// 2.找到抽屉bucket(没有就创建)
 		bucket := tx.Bucket([]byte(blockBucket))
 		if bucket == nil {
@@ -53,6 +53,9 @@ func NewBlockChain(address string) *BlockChain {
 		}
 		return nil
 	})
+	if err != nil {
+		log.Panic(err)
+	}
 	return &BlockChain{db, lastHash}
 }
 
@@ -67,7 +70,7 @@ func (bc *BlockChain) AddBlock(txs []*Transaction) {
 	db := bc.db
 	lastHash := bc.tail
 
-	db.Update(func(tx *bolt.Tx) error {
+	err := db.Update(func(tx *bolt.Tx) error {
 		bucket := tx.Bucket([]byte(blockBucket))
 		if bucket == nil {
 			log.Panic("bucket为空")
@@ -80,6 +83,9 @@ func (bc *BlockChain) AddBlock(txs []*Transaction) {
 		bc.tail = block.Hash
 		return nil
 	})
+	if err != nil {
+		log.Panic(err)
+	}
 }
 
 // 找到指定地址的所有UTXO
