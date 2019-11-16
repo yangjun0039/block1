@@ -5,7 +5,6 @@ import (
 	"crypto/sha256"
 	"encoding/gob"
 	"fmt"
-	"github.com/btcsuite/btcutil/base58"
 	"log"
 )
 
@@ -36,11 +35,7 @@ type TXOutput struct {
 // 由于现在存储的字段是公钥的哈希，所以无法直接创建TXOutput
 // 为了能够得到公钥哈希，需要处理一下，写一个Lock函数
 func (output *TXOutput) Lock(address string) {
-	//1.解码
-	addressByte := base58.Decode(address) //25字节
-	//2.截取出公钥哈希：（去除version，去除校验码）
-	len := len(addressByte)
-	pubKeyHash := addressByte[1 : len-4] // 去除version(1字节)，去除校验码(4字节)
+	pubKeyHash := GetPubKeyFromAddress(address)
 	output.PukKeyHash = pubKeyHash
 }
 
@@ -66,7 +61,7 @@ func (tx *Transaction) SetHash() {
 	tx.TXID = hash[:]
 }
 
-const reward = 12.5
+const reward = 50
 
 // 实现一个函数，判断当前交易是否为挖矿交易
 func (tx *Transaction) IsCoinbase() bool {

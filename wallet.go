@@ -8,6 +8,7 @@ import (
 	"crypto/sha256"
 	"golang.org/x/crypto/ripemd160"
 	"github.com/btcsuite/btcutil/base58"
+	"bytes"
 )
 
 //这里钱包是一个结构，每一个钱包保存了公钥，私钥
@@ -75,4 +76,19 @@ func CheckSum(data []byte) []byte {
 	//前四字节检验码
 	checkCode := hash2[:4]
 	return checkCode
+}
+
+func IsValidAddress(address string) bool{
+	//1.解码
+	addressByte := base58.Decode(address)
+	if len(addressByte) < 4{
+		return false
+	}
+	//2.取数据
+	payload := addressByte[:len(addressByte)-4]
+	checkSUm1 := addressByte[len(addressByte)-4:]
+	//3.做CheckSum
+	checkSUm2 := CheckSum(payload)
+	//4.比较
+	return bytes.Equal(checkSUm1, checkSUm2)
 }

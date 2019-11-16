@@ -7,9 +7,8 @@ package main
 // 6.重构代码
 
 func main() {
-	bc := NewBlockChain("杨骏")
-	//bc.AddBlock("111111")
-	//bc.AddBlock("222222")
+	address := "1LfgYNozXixcV2E7MZ8gRStxXQehyQ1cWt"
+	bc := NewBlockChain(address)
 	cli := CLI{bc}
 	cli.Run()
 

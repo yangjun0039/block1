@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"github.com/btcsuite/btcutil/base58"
 )
 
 const walletFile = "wallet.dat"
@@ -87,4 +88,17 @@ func (ws *Wallets) GetAllAddress() []string {
 		addresses = append(addresses, address)
 	}
 	return addresses
+}
+
+//通过地址返回公钥哈希
+func GetPubKeyFromAddress(address string) []byte {
+	//1.解码
+	addressByte := base58.Decode(address) //25字节
+	//2.截取出公钥哈希：（去除version，去除校验码）
+	length := len(addressByte)
+	if length < 4 {
+		log.Panic("地址格式错误")
+	}
+	pubKeyHash := addressByte[1: length-4] // 去除version(1字节)，去除校验码(4字节)
+	return pubKeyHash
 }
