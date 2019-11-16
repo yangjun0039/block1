@@ -17,7 +17,7 @@ func (cli *CLI) PrintBlockChain() {
 		fmt.Printf("时间戳:%d\n", block.TimeStamp)
 		fmt.Printf("难度值:%d\n", block.Difficulty)
 		fmt.Printf("随机数:%x\n", block.Nonce)
-		fmt.Printf("data:%s\n", block.Transactions[0].TXInputs[0].Sig)
+		fmt.Printf("data:%s\n", block.Transactions[0].TXInputs[0].PubKey)
 		fmt.Printf("***********************\n\n")
 		if len(block.PrevHash) == 0 {
 			fmt.Println("区块链遍历结束")
@@ -27,12 +27,12 @@ func (cli *CLI) PrintBlockChain() {
 }
 
 func (cli *CLI) GetBalance(address string) {
-	utxos := cli.bc.FindUTXOs(address)
-	total := 0.0
-	for _, utxo := range utxos {
-		total += utxo.Value
-	}
-	fmt.Printf("%s余额为%f", address, total)
+	//utxos := cli.bc.FindUTXOs(address)
+	//total := 0.0
+	//for _, utxo := range utxos {
+	//	total += utxo.Value
+	//}
+	//fmt.Printf("%s余额为%f", address, total)
 }
 
 func (cli *CLI) Send(from, to string, amount float64, miner, data string) {
@@ -67,11 +67,11 @@ func (cli *CLI) NewWallet() {
 
 }
 
-func (cli *CLI) ListAddresses(){
+func (cli *CLI) ListAddresses() {
 	ws := NewWallets()
 	addresses := ws.GetAllAddress()
 
-	for _,address := range addresses{
-		fmt.Printf("地址：%s\n",address)
+	for _, address := range addresses {
+		fmt.Printf("地址：%s\n", address)
 	}
 }
